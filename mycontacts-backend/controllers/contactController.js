@@ -24,7 +24,7 @@ const createContact = asyncHandler(async(req,res) =>
         res.status(400);
         throw new Error("All fields are mandatory: ");
     }
-    const conatct = await Contact.create({
+    const contact = await Contact.create({
         name,
         email,
         phone,
@@ -38,7 +38,13 @@ const createContact = asyncHandler(async(req,res) =>
 //@access public
 const getContact =asyncHandler(async(req,res) =>
 {
-    res.status(200).json({message:`Get contact for ${req.params.id}` });
+    const contact = await Contact.findById(req.params.id);
+    if(!contact)
+    {
+        res.status(404);
+        throw new Error("Contact not found");
+    }
+    res.status(200).json(contact);
 });
 
 //@desc Update contacts
